@@ -26,9 +26,9 @@ app.get("/health", (req, res) => {
 
 connectDB()
     .then(db => {
-        app.use("/api", useAuthRouter(db));
-        app.use("/api", useLinkRouter(db));
-        
+        app.use(useAuthRouter(db));
+        app.use(useLinkRouter(db));
+
         app.use("*", (req, res) => {
             res.status(404).json({
                 message: "Route not found."

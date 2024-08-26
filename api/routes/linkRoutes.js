@@ -17,13 +17,13 @@ const useLinkRouter = db => {
     const Links = db.collection("links");
     const Visitors = db.collection("Visitors");
     
-    router.post("/links/shorten", linkShortnerLimiter, verifyJwt, createShortLink(Links));
-    router.post("/links/shorten-anonymously", linkShortnerLimiter, handleAnonymousUser, createShortLink(Links));
-    router.get("/links", verifyJwt, getLinks(Links));
-    router.get("/links/:shortId", verifyJwt, getSingleLink(Links));
-    router.get("/links/redirect/:shortId", handleShortLinkClick(Links));
-    router.delete("/links/:shortId", verifyJwt, deleteLink(Links));
-    router.patch("/links/:shortId", verifyJwt, changeLinkAlias(Links));
+    router.post("/api/links/shorten", linkShortnerLimiter, verifyJwt, createShortLink(Links));
+    router.post("/api/links/shorten-anonymously", linkShortnerLimiter, handleAnonymousUser, createShortLink(Links));
+    router.get("/api/links", verifyJwt, getLinks(Links));
+    router.get("/api/links/:shortId", verifyJwt, getSingleLink(Links));
+    router.get("/api/links/redirect/:shortId", handleShortLinkClick(Links));
+    router.delete("/api/links/:shortId", verifyJwt, deleteLink(Links));
+    router.patch("/api/links/:shortId", verifyJwt, changeLinkAlias(Links));
 
     /* Handle App Visitor Count */
     router.get("/visit", visitorCount(Visitors));
