@@ -1,6 +1,9 @@
 import { MongoClient } from "mongodb";
 
-const client = new MongoClient(`${process.env.MONGODB_URI}/slice-url`);
+const client = new MongoClient(`${process.env.MONGODB_URI}/slice-url`, {
+  serverSelectionTimeoutMS: 10000,
+  maxPoolSize: 10
+});
 
 let db;
 
@@ -14,9 +17,10 @@ async function connectDB() {
         } catch (err) {
             console.error("Failed to connect to MongoDB:", err);
             throw err;
-    }
-    return db;
+      }
   }
+  
+  return db;
 }
 
 export default connectDB;

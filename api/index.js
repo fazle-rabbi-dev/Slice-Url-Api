@@ -18,16 +18,20 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/health", (req, res) => {
-    res.status(200).json({
-        message: "Ok"
-    });
+app.get("/", (req, res) => {
+  res.send(`<h1 style="color:#784beb">Hey 👋, there!</h1>`);
 });
 
 connectDB()
     .then(db => {
         app.use(useAuthRouter(db));
         app.use(useLinkRouter(db));
+        
+        app.get("/health", (req, res) => {
+            res.status(200).json({
+                message: "Ok"
+            });
+        });
 
         app.use("*", (req, res) => {
             res.status(404).json({
@@ -51,6 +55,7 @@ connectDB()
     })
     .catch(err => {
         console.error("Failed to start server", err);
+        process.exit(1);
     });
 
 // For vercel deployment
