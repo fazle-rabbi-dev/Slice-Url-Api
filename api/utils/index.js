@@ -2,6 +2,8 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import rateLimit from 'express-rate-limit';
+const ENVIRONMENT = process.env.ENVIRONMENT;
+
 
 // =====================================================================================================================
 // Utilities
@@ -40,6 +42,22 @@ export const generateShortUrl = SERVER_ADDRESS => {
 
 export const generateToken = () => {
     return crypto.randomBytes(32).toString("hex"); // Generates a 64-character hexadecimal token
+};
+
+export const generateConfirmationUrl = (username, confirmationToken) => {
+  const LOCAL_CLIENT_ADDRESS = process.env.LOCAL_CLIENT_ADDRESS;
+  const REMOTE_CLIENT_ADDRESS = process.env.REMOTE_CLIENT_ADDRESS;
+  
+  let url;
+  const common = `/confirm-account?username=${username}&token=${confirmationToken}`;
+  
+  if(ENVIRONMENT === "dev") {
+    url = LOCAL_CLIENT_ADDRESS;
+  } else {
+    url = REMOTE_CLIENT_ADDRESS;
+  }
+  
+  return url+common;
 };
 
 export const sendEmail = async ({ to, subject, html }) => {

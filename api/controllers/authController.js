@@ -11,7 +11,7 @@ admin.initializeApp({
 });
 
 import serviceAccount from "../config/service-key.js";
-import { accountConfirmationTemplate, accountConfirmationPath } from "../config/constants.js";
+import { accountConfirmationTemplate } from "../config/constants.js";
 import {
     validateRegistration,
     validateLogin,
@@ -21,9 +21,11 @@ import {
     ApiResponse,
     ApiError,
     sendEmail,
-    generateToken
+    generateToken,
+    generateConfirmationUrl
 } from "../utils/index.js";
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key";
+
 
 // ========== Register ==========
 export const registerUser = Users => {
@@ -68,10 +70,8 @@ export const registerUser = Users => {
         };
 
         const confirmationToken = generateToken();
-        const confirmationUrl = `${req.protocol}://${req.get(
-            "host"
-        )}/${accountConfirmationPath}?username=${username}&token=${confirmationToken}`;
-
+        const confirmationUrl = generateConfirmationUrl(username, confirmationToken);
+        
         const isEmailSent = await sendEmail({
             to: email,
             subject: "Slice Url - Account Confirmation",
@@ -83,7 +83,8 @@ export const registerUser = Users => {
                 statusCode: 500
             });
         }
-
+        
+        newUser.accountConfirmationToken = confirmationToken;
         const result = await Users.insertOne(newUser);
         delete newUser.password;
 
@@ -151,14 +152,14 @@ export const loginUser = Users => {
 export const confirmAccount = Users => {
     return asyncHandler(async (req, res) => {
         const { username, token } = req.query;
-
+        
         if (!isValidUsername(username?.trim()) && !token?.trim()) {
             throw ApiError({
                 statusCode: 400,
                 message: "Oops! You might have clicked on a broken URL"
             });
         }
-
+        
         const existingUser = await Users.findOne({ username });
         if (!existingUser) {
             throw ApiError({

@@ -25,11 +25,12 @@ Slice-Url-API is a REST Api for the Slice-Url **React application**, designed to
 
 ## 🚀 Live API
 
-The live version of the API is deployed at: [https://slice-url-api.vercel.app](https://slice-url.vercel.app)
+- The live version of the API is deployed at: [https://slice-url-api.vercel.app](https://slice-url.vercel.app)
 
 ## 🌐 Client URL
 
-The frontend of the Slice-Url project can be accessed here: [https://slice-url.vercel.app](https://slice-url.vercel.app)
+- The frontend of the Slice-Url project can be accessed here: [https://slice-url.vercel.app](https://slice-url.vercel.app)
+- Explore frontend code <a href="https://github.com/fazle-rabbi-dev/Slice-Url">here.</a>
 
 ---
 

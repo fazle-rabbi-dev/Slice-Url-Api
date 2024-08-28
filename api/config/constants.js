@@ -1,9 +1,9 @@
-export const accountConfirmationPath = "api/auth/confirm-account";
+const APP_NAME = "Slice-URL";
 
 export const accountConfirmationTemplate = (fullName, confirmationUrl) => {
   return `
     <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-      <h2>Account Confirmation</h2>
+      <h2>${APP_NAME} Account Confirmation</h2>
       <p>Hi ${fullName},</p>
       <p>Thank you for registering with us! Please confirm your email address by clicking the link below:</p>
       <a href="${confirmationUrl}" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">

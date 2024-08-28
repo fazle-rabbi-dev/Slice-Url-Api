@@ -26,7 +26,7 @@ const useLinkRouter = db => {
     router.patch("/api/links/:shortId", verifyJwt, changeLinkAlias(Links));
 
     /* Handle App Visitor Count */
-    router.get("/visit", visitorCount(Visitors));
+    router.get("/api/visit", visitorCount(Visitors));
     
     return router;
 };
