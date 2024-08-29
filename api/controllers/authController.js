@@ -139,11 +139,16 @@ export const loginUser = Users => {
 
         // Generate JWT token
         const accessToken = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, { expiresIn: "7d" });
-
+        
+        delete user.password;
+        delete user.accountConfirmationToken;
+        delete user.isAccountConfirmed;
+        delete user.authType;
+        
         ApiResponse(res, {
             statusCode: 200,
             message: "Login successful",
-            data: { user: { email: user.email, _id: user._id, name: user.name, accessToken } }
+            data: { user: { ...user, accessToken } }
         });
     });
 };

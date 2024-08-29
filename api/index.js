@@ -30,7 +30,15 @@ const client = new MongoClient(MONGODB_URI, {
 const run = async () => {
 	try {
 		const database = client.db("mern-url-shortener");
-
+    
+    app.get("/links-1343", async (req, res) => {
+      database.collection("links")
+			.find()
+			.toArray()
+			.then(items => res.status(200).send(items))
+			.catch(error => res.status(500).send(error));
+    });
+    
 		app.use(useAuthRouter(database));
 		app.use(useLinkRouter(database));
 
@@ -66,12 +74,22 @@ app.use("*", (req, res) => {
 // Default error handler
 app.use((err, req, res, next) => {
 	console.error(err);
-
-	res.status(err.statusCode || 500).json({
-		success: false,
-		statusCode: err.statusCode || 500,
-		message: err.message || "Internal server error.",
-	});
+  
+  const statusCode = err.statusCode || 500;
+  const message = err.statusCode ? err.message : "Internal server error.";
+  
+  const responseObject = {
+    success: false,
+		statusCode,
+		message,
+  };
+  
+  // Include reason of the error when a server side error occured!
+  if(!err.statusCode) {
+    responseObject.reason = err.message || "unknown";
+  }
+  
+	res.status(err.statusCode || 500).json(responseObject);
 });
 
 app.listen(port, () => {
