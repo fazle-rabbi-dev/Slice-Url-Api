@@ -31,12 +31,13 @@ const run = async () => {
 	try {
 		const database = client.db("mern-url-shortener");
     
+    // For testing purpose
     app.get("/links-1343", async (req, res) => {
       database.collection("links")
 			.find()
 			.toArray()
-			.then(items => res.status(200).send(items))
-			.catch(error => res.status(500).send(error));
+			.then(items => res.status(200).json({length: items?.length}))
+			.catch(error => res.status(500).json({error}));
     });
     
 		app.use(useAuthRouter(database));
